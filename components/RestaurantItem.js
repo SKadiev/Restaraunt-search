@@ -9,10 +9,10 @@ const RestaurantItem = ({ listTitle, items, navigation }) => {
     <View>
       <Text>{listTitle}</Text>
       <FlatList horizontal style={styles.container} data={items} keyExtractor={(item, index) => item.id} renderItem={({ item }) => {
-        return <TouchableOpacity onPress={() => navigation.navigate('Details', { category: listTitle, id: item.id })} style={styles.restaurantItem}>
+        return <TouchableOpacity onPress={() => navigation.navigate('Details', { location: item.location })} style={styles.restaurantItem}>
           <Image source={require('../assets/pancake.jpg')} style={styles.image} />
-          <Text >Title : {item.title}</Text>
-          <Text>{item.stars} Stars, {item.reviews} Reviews</Text>
+          <Text style={styles.title}>Title : {item.title}</Text>
+          <Text style={styles.review}>{item.stars} Stars, {item.reviews} Reviews</Text>
         </TouchableOpacity>
       }} />
     </View>
@@ -21,19 +21,28 @@ const RestaurantItem = ({ listTitle, items, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flexDirection: 'row',
+
   },
   restaurantItem: {
-    borderColor: '#000',
+    borderColor: 'lightgray',
     borderBottomWidth: 1,
     marginVertical: 5,
     width: 200,
-    // height: 200
+    marginRight: 20
 
   },
   image: {
-    height: 150,
-    width: 150
+    height: 120,
+    width: 250,
+    borderRadius: 8,
+    width: '100%'
+  },
+  title: {
+    fontWeight: 'bold'
+  },
+  review: {
+    color: 'darkgray',
+
   }
 })
 

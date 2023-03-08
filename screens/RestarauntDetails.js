@@ -1,103 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'react-native'
 import { Dimensions } from 'react-native'
 import { StyleSheet } from 'react-native'
 import { Text } from 'react-native'
 import { View } from 'react-native'
-
-const RESTAURANTS_LIST = {
-  'Cost Effective': [
-    {
-      id: 1,
-      title: 'Effective Cost 1',
-      stars: 4.5,
-      reviews: 100,
-      image: ''
-    },
-    {
-      id: 2,
-      title: 'Effective Cost 2',
-      stars: 3.5,
-      reviews: 200,
-      image: ''
-    }
-  ],
-
-  'Bit Pricer': [
-    {
-      id: 1,
-      title: 'Bit Cost 1',
-      stars: 4.5,
-      reviews: 100,
-      image: ''
-    },
-    {
-      id: 2,
-      title: 'Bit Cost 2',
-      stars: 3.5,
-      reviews: 200,
-      image: ''
-    },
-    {
-      id: 3,
-      title: 'Bit Cost 2',
-      stars: 3.5,
-      reviews: 200,
-      image: ''
-    },
-    {
-      id: 4,
-      title: 'Bit Cost 2',
-      stars: 3.5,
-      reviews: 200,
-      image: ''
-    },
-    {
-      id: 5,
-      title: 'Bit Cost 2',
-      stars: 3.5,
-      reviews: 200,
-      image: ''
-    },
-    {
-      id: 6,
-      title: 'Bit Cost 2',
-      stars: 3.5,
-      reviews: 200,
-      image: ''
-    },
-
-
-  ],
-
-
-  'Big Spender': [
-    {
-      id: 1,
-      title: 'Spender Cost 1',
-      stars: 4.5,
-      reviews: 100,
-      image: ''
-    },
-    {
-      id: 2,
-      title: 'Spender Cost 2',
-      stars: 3.5,
-      reviews: 200,
-      image: ''
-    }
-  ],
-}
+import { loadSingleRestaurant } from '../api/geoapify'
 
 const RestaurantDetails = ({ navigation }) => {
-  const category = navigation.getParam('category');
-  const id = navigation.getParam('id');
-  const item = RESTAURANTS_LIST[category].find(item => item.id === id);
+  const location = navigation.getParam('location');
+  const [item, setItem] = useState(null);
+  useEffect(() => {
+    const load = async () => {
+      const item = await loadSingleRestaurant(location);
+      console.log(item);
+      setItem(item)
+    }
+    load();
+  }, [])
+  console.log(item);
+
   return (
     <View style={styles.restaurantItem}>
-      <Image source={require('../assets/pancake.jpg')} style={styles.image} />
-      <Text style={styles.text}>Title : {item.title}</Text>
-      <Text style={styles.text}>{item.stars} Stars, {item.reviews} Reviews</Text>
+      {item &&
+        <>
+          <Image source={require('../assets/pancake.jpg')} style={styles.image} />
+          <Text style={styles.text}>Title : {item.title}</Text>
+          <Text style={styles.text}>{item.stars} Rating, {item.reviews} Reviews</Text>
+        </>
+      }
     </View>
   )
 }
@@ -109,8 +39,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     width: '100%',
     height: '50%',
-    backgroundColor: 'green'
-    
   },
   image: {
     width: '100%',

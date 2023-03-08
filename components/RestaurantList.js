@@ -5,9 +5,9 @@ import RestaurantItem from './RestaurantItem'
 const RestaurantList = ({ navigation, restaurantsItems }) => {
   return (
     <View>
-      <RestaurantItem navigation={navigation} listTitle="Cost Effective" items={restaurantsItems['Cost Effective']} />
-      <RestaurantItem navigation={navigation} listTitle="Bit Pricer" items={restaurantsItems['Bit Pricer']} />
-      <RestaurantItem navigation={navigation} listTitle="Big Spender" items={restaurantsItems['Big Spender']} />
+      <RestaurantItem navigation={navigation} listTitle="500m Radius Restaraunt" items={restaurantsItems['500m']} />
+      <RestaurantItem navigation={navigation} listTitle="5000m Radius Restaraunt" items={restaurantsItems['5000m']} />
+      <RestaurantItem navigation={navigation} listTitle="25000m Radius Restaurant" items={restaurantsItems['25000m']} />
     </View>
   )
 }
