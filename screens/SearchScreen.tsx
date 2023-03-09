@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 import RestaurantList from '../components/RestaurantList';
 import SearchBar from '../components/SearchBar';
 import useResult from '../hooks/useResult';
@@ -33,9 +34,13 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<SearchBar onSearchChange={onSeachPlace} />
-			{isLoading ? (
-				<Text style={styles.loadingStyle}>Is loading</Text>
-			) : (
+
+			<Spinner
+				visible={isLoading}
+				textContent={'Loading...'}
+				textStyle={styles.spinnerTextStyle}
+			/>
+			{!isLoading && (
 				<RestaurantList
 					navigation={navigation}
 					restaurantsItems={restaurantsRadiusItems}
@@ -54,6 +59,9 @@ const styles = StyleSheet.create({
 	},
 	loadingStyle: {
 		alignSelf: 'center'
+	},
+	spinnerTextStyle: {
+		color: '#FFF'
 	}
 });
 

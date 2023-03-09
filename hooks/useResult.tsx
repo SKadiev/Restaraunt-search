@@ -28,6 +28,7 @@ export default (searchData: SearchLocationData) => {
 
 	useEffect(() => {
 		const load = async () => {
+			setIsLoading(true);
 			const radius500 = await loadRadiusRestaurants(500, lat, lon);
 			const radius5000 = await loadRadiusRestaurants(5000, lat, lon);
 			const radius25000 = await loadRadiusRestaurants(25000, lat, lon);
@@ -37,6 +38,7 @@ export default (searchData: SearchLocationData) => {
 			newStateRadiusRestaraunt['25000m'] = radius25000;
 			console.log(newStateRadiusRestaraunt);
 			setRestaurantRadiusItems(newStateRadiusRestaraunt);
+			setIsLoading(false);
 		};
 
 		load();
