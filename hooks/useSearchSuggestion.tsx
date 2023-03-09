@@ -8,17 +8,21 @@ export type AddressResult = {
 };
 export default (searchData: { query: string }) => {
 	const [result, setResult] = useState<SearchLocationData[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { query } = searchData;
 
 	useEffect(() => {
 		const load = async () => {
+			setIsLoading(true);
 			const res = await searchPlaces(query);
+			setIsLoading(false);
 			setResult(res);
 		};
 		load();
 	}, [query]);
 
 	return {
-		result
+		result,
+		isLoading
 	};
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { View } from 'react-native';
 import { AutocompleteInput } from 'react-native-autocomplete-input';
@@ -6,31 +6,36 @@ import useSearchSuggestion from '../hooks/useSearchSuggestion';
 import { SearchLocationData } from '../screens/SearchScreen';
 
 export type Props = {
-	searchTerm: string;
 	onSearchChange: (searchData: SearchLocationData) => void;
 };
 
-const SearchBar: React.FC<Props> = ({ searchTerm, onSearchChange }) => {
+const SearchBar: React.FC<Props> = ({ onSearchChange }) => {
 	const [selectedItem, setSelectedItem] = useState<{ query: string }>({
 		query: ''
 	});
 
-	const data = useSearchSuggestion(selectedItem);
+	const { query } = selectedItem;
+	const [hideResults, setHideResults] = useState<boolean>(false);
 
+	const data = useSearchSuggestion(selectedItem);
 	return (
 		<View style={styles.autocompleteContainer}>
 			<AutocompleteInput
+				hideResults={hideResults}
 				data={data?.result ?? []}
-				value={selectedItem?.query}
-				onChangeText={(text: string) => setSelectedItem({ query: text })}
+				value={query}
+				onChangeText={(text: string) => {
+					setSelectedItem({ query: text }), setHideResults(false);
+				}}
 				flatListProps={{
 					keyExtractor: (_: Ad, idx: any) => idx,
 					renderItem: ({ item }: { item: SearchLocationData }) => (
 						<TouchableOpacity>
 							<Text
 								onPress={() => {
-									console.log(item);
 									onSearchChange(item);
+									setSelectedItem({ query: item.name });
+									setHideResults(true);
 								}}
 								style={styles.itemText}
 							>

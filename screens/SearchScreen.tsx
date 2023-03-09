@@ -17,7 +17,6 @@ export type SearchLocationData = {
 };
 
 const SearchScreen: React.FC<Props> = ({ navigation }) => {
-	const [searchTerm, setSearchTerm] = useState('');
 	const [searchPlaceData, setSearchPlaceData] = useState<SearchLocationData>({
 		name: 'Init',
 		lat: '21.4316495',
@@ -28,18 +27,12 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		setSearchPlaceData(searhPlaceData);
 	};
 
-	const searchChange = async (newTerm: string): Promise<void> => {
-		setSearchTerm(newTerm);
-	};
-
-	console.log('dasdas ', searchPlaceData);
-
 	const { searchApi, resLength, restaurantsRadiusItems, isLoading } =
 		useResult(searchPlaceData);
 
 	return (
 		<View style={styles.container}>
-			<SearchBar searchTerm={searchTerm} onSearchChange={onSeachPlace} />
+			<SearchBar onSearchChange={onSeachPlace} />
 			{isLoading ? (
 				<Text style={styles.loadingStyle}>Is loading</Text>
 			) : (

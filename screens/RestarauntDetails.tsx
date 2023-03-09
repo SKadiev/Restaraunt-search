@@ -15,12 +15,10 @@ const RestaurantDetails: React.FC<{ navigation: any }> = ({ navigation }) => {
 	useEffect(() => {
 		const load = async () => {
 			const item = await loadSingleRestaurant(location);
-			console.log(item);
 			setItem(item);
 		};
 		load();
 	}, []);
-	console.log(item);
 
 	return (
 		<View style={styles.restaurantItem}>

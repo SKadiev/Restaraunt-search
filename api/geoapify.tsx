@@ -37,7 +37,6 @@ export const loadRadiusRestaurants = async (
 		}
 	);
 
-	console.log(radiusRestaurantData);
 	return radiusRestaurantData.filter(
 		(restaurant) => restaurant.title !== undefined
 	);
