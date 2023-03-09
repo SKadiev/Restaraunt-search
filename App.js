@@ -3,11 +3,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import RestaurantDetails from './screens/RestarauntDetails';
 import SearchScreen from './screens/SearchScreen';
 
-
 const AppNavigator = createStackNavigator(
   {
     Search: SearchScreen,
-    Details: RestaurantDetails
+    Details: RestaurantDetails,
   },
   {
     initialRouteName: 'Search',
