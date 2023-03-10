@@ -28,7 +28,7 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		setSearchPlaceData(searhPlaceData);
 	};
 
-	const { searchApi, resLength, restaurantsRadiusItems, isLoading } =
+	const { resLength, restaurantsRadiusItems, isLoading } =
 		useResult(searchPlaceData);
 
 	return (

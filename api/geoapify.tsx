@@ -38,12 +38,12 @@ export const loadRadiusRestaurants = async (
 	);
 
 	return radiusRestaurantData.filter(
-		(restaurant) => restaurant.title !== undefined
+		(restaurant: RestaurantItem) => restaurant.title !== undefined
 	);
 };
 
 export const loadSingleRestaurant = async ({
-	location: { longitude, latitude }
+	location: { latitude, longitude }
 }: LocationType) => {
 	const restaurantData = await axios.get(
 		`https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=34f01aa367cc4fcb96f56acdb24d79c6`
@@ -63,7 +63,7 @@ export const loadSingleRestaurant = async ({
 	};
 };
 
-export const searchPlaces = async (searchText) => {
+export const searchPlaces = async (searchText: string) => {
 	try {
 		const placesData = await axios.get(
 			`https://api.geoapify.com/v1/geocode/autocomplete?text=${searchText}&format=json&apiKey=34f01aa367cc4fcb96f56acdb24d79c6`

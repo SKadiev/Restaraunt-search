@@ -24,7 +24,7 @@ export type Props = {
 
 const RestaurantItem: React.FC<Props> = ({ listTitle, items, navigation }) => {
 	return (
-		<View>
+		<View style={styles.container}>
 			<Text style={styles.title}>
 				{listTitle} - Results({items.length})
 			</Text>
@@ -59,7 +59,9 @@ const RestaurantItem: React.FC<Props> = ({ listTitle, items, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-	container: {},
+	container: {
+		marginVertical: 10
+	},
 	restaurantItem: {
 		borderColor: 'lightgray',
 		borderBottomWidth: 1,

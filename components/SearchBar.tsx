@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { View } from 'react-native';
 import { AutocompleteInput } from 'react-native-autocomplete-input';
-import useSearchSuggestion from '../hooks/useSearchSuggestion';
+import useSearchSuggestion, {
+	AddressResult
+} from '../hooks/useSearchSuggestion';
 import { SearchLocationData } from '../screens/SearchScreen';
 
 export type Props = {
@@ -19,8 +21,9 @@ const SearchBar: React.FC<Props> = ({ onSearchChange }) => {
 
 	const data = useSearchSuggestion(selectedItem);
 	return (
-		<View style={styles.autocompleteContainer}>
+		<View style={styles.container}>
 			<AutocompleteInput
+				style={styles.autocompleteContainer}
 				hideResults={hideResults}
 				data={data?.result ?? []}
 				value={query}
@@ -28,7 +31,7 @@ const SearchBar: React.FC<Props> = ({ onSearchChange }) => {
 					setSelectedItem({ query: text }), setHideResults(false);
 				}}
 				flatListProps={{
-					keyExtractor: (_: Ad, idx: any) => idx,
+					keyExtractor: (_: SearchLocationData, idx: any) => idx,
 					renderItem: ({ item }: { item: SearchLocationData }) => (
 						<TouchableOpacity>
 							<Text
@@ -52,14 +55,14 @@ const SearchBar: React.FC<Props> = ({ onSearchChange }) => {
 const styles = StyleSheet.create({
 	searchBar: {
 		flex: 1,
-		fontSize: 18
+		fontSize: 18,
+		marginVertical: 20
 	},
 	container: {
 		marginVertical: 10,
 		flexDirection: 'row',
 		backgroundColor: 'lightgray',
-		borderRadius: 20,
-		height: 50
+		borderRadius: 20
 	},
 	searchIcon: {
 		alignSelf: 'center',
@@ -72,11 +75,19 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		right: 0,
 		top: 0,
-		zIndex: 1
+		zIndex: 2
 	},
 	itemText: {
-		fontSize: 15,
-		margin: 2
+		fontSize: 18,
+		marginVertical: 10,
+		top: 80,
+		textAlign: 'center',
+		borderWidth: 2,
+		borderRadius: 10,
+		backgroundColor: 'gray'
+	},
+	resultWrapper: {
+		zIndex: 1
 	}
 });
 

@@ -1,28 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Image } from 'react-native';
-import { Dimensions } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
 import { View } from 'react-native';
-import { loadSingleRestaurant } from '../api/geoapify';
-import RestaurantItem, {
-	RestaurantItem as ResType
-} from '../components/RestaurantItem';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
+// import { loadSingleRestaurant } from '../api/geoapify';
+// import RestaurantItem, {
+// 	RestaurantItem as ResType
+// } from '../components/RestaurantItem';
+import { loadSingleRestaurantData } from '../hooks/useResult';
 
 const RestaurantDetails: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const location = navigation.getParam('location');
-	const [item, setItem] = useState<ResType | null>(null);
-	useEffect(() => {
-		const load = async () => {
-			const item = await loadSingleRestaurant(location);
-			setItem(item);
-		};
-		load();
-	}, []);
+	console.log(location);
+	// const [item, setItem] = useState<ResType | null>(null);
+	// useEffect(() => {
+	// 	const load = async () => {
+	// 		const item = await loadSingleRestaurant(location);
+	// 		setItem(item);
+	// 	};
+	// 	load();
+	// }, []);
+	const { item, isLoading } = loadSingleRestaurantData({ location: location });
 
 	return (
 		<View style={styles.restaurantItem}>
-			{item && (
+			{item ? (
 				<>
 					<Image
 						source={require('../assets/pancake.jpg')}
@@ -33,6 +36,12 @@ const RestaurantDetails: React.FC<{ navigation: any }> = ({ navigation }) => {
 						{item.stars} Rating, {item.reviews} Reviews
 					</Text>
 				</>
+			) : (
+				<Spinner
+					visible={isLoading}
+					textContent={'Loading...'}
+					textStyle={styles.spinnerTextStyle}
+				/>
 			)}
 		</View>
 	);
@@ -56,6 +65,9 @@ const styles = StyleSheet.create({
 	text: {
 		textAlign: 'center',
 		marginVertical: 10
+	},
+	spinnerTextStyle: {
+		color: '#FFF'
 	}
 });
 

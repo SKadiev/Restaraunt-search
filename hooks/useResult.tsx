@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
-import { loadRadiusRestaurants, loadSingleRestaurant } from '../api/geoapify';
+import {
+	loadRadiusRestaurants,
+	loadSingleRestaurant,
+	LocationType
+} from '../api/geoapify';
 import { SearchLocationData } from '../screens/SearchScreen';
+import { RestaurantItem as ResType } from '../components/RestaurantItem';
 
 const RADIUS_RESTAURANTS: { '500m': []; '5000m': []; '25000m': [] } = {
 	'500m': [],
@@ -36,7 +41,6 @@ export default (searchData: SearchLocationData) => {
 			newStateRadiusRestaraunt['500m'] = radius500;
 			newStateRadiusRestaraunt['5000m'] = radius5000;
 			newStateRadiusRestaraunt['25000m'] = radius25000;
-			console.log(newStateRadiusRestaraunt);
 			setRestaurantRadiusItems(newStateRadiusRestaraunt);
 			setIsLoading(false);
 		};
@@ -49,6 +53,27 @@ export default (searchData: SearchLocationData) => {
 		restaurantsRadiusItems,
 		searchApi2,
 		resLength,
+		isLoading
+	};
+};
+
+export const loadSingleRestaurantData = (locationData: LocationType) => {
+	const [item, setItem] = useState<ResType | null>(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const { latitude, longitude } = locationData.location;
+
+	useEffect(() => {
+		setIsLoading(true);
+		const load = async () => {
+			const item = await loadSingleRestaurant(locationData);
+			setItem(item);
+			setIsLoading(false);
+		};
+		load();
+	}, [latitude, longitude]);
+
+	return {
+		item,
 		isLoading
 	};
 };
