@@ -4,23 +4,12 @@ import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
 import { View } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
-// import { loadSingleRestaurant } from '../api/geoapify';
-// import RestaurantItem, {
-// 	RestaurantItem as ResType
-// } from '../components/RestaurantItem';
 import { loadSingleRestaurantData } from '../hooks/useResult';
 
 const RestaurantDetails: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const location = navigation.getParam('location');
 	console.log(location);
-	// const [item, setItem] = useState<ResType | null>(null);
-	// useEffect(() => {
-	// 	const load = async () => {
-	// 		const item = await loadSingleRestaurant(location);
-	// 		setItem(item);
-	// 	};
-	// 	load();
-	// }, []);
+
 	const { item, isLoading } = loadSingleRestaurantData({ location: location });
 
 	return (

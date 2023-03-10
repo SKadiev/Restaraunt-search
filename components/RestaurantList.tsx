@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import RestaurantItem, { RestaurantItem as ResType } from './RestaurantItem';
 
 export type Props = {
@@ -9,7 +9,7 @@ export type Props = {
 
 const RestaurantList: React.FC<Props> = ({ navigation, restaurantsItems }) => {
 	return (
-		<View>
+		<View style={styles.container}>
 			<ScrollView>
 				<RestaurantItem
 					navigation={navigation}
@@ -30,5 +30,11 @@ const RestaurantList: React.FC<Props> = ({ navigation, restaurantsItems }) => {
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		marginTop: 40
+	}
+});
 
 export default RestaurantList;
