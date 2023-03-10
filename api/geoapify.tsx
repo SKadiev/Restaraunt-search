@@ -18,6 +18,7 @@ export const loadRadiusRestaurants = async (
 	latitude: string = '21.4316495',
 	longitude: string = '41.9960924'
 ) => {
+	console.log('filtered called with radius' + radius);
 	const radius500Res = await geoapify.get(
 		`/places?categories=catering.restaurant&filter=circle:${latitude},${longitude},${radius}&bias=proximity:${latitude},${longitude}&lang=en&limit=500&apiKey=34f01aa367cc4fcb96f56acdb24d79c6`
 	);
@@ -32,7 +33,9 @@ export const loadRadiusRestaurants = async (
 				},
 				stars: 4.5,
 				reviews: 100,
-				image: ''
+				image: '',
+				street: restaurant.properties.street,
+				distance: restaurant.properties.distance
 			};
 		}
 	);
@@ -49,7 +52,6 @@ export const loadSingleRestaurant = async ({
 		`https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=34f01aa367cc4fcb96f56acdb24d79c6`
 	);
 	const restaurant = restaurantData.data.results[0];
-
 	return {
 		id: restaurant.name + restaurant.street,
 		title: restaurant.name,
@@ -59,7 +61,8 @@ export const loadSingleRestaurant = async ({
 		},
 		stars: 4.5,
 		reviews: 100,
-		image: ''
+		image: '',
+		street: restaurant.street
 	};
 };
 
@@ -68,7 +71,7 @@ export const searchPlaces = async (searchText: string) => {
 		const placesData = await axios.get(
 			`https://api.geoapify.com/v1/geocode/autocomplete?text=${searchText}&format=json&apiKey=34f01aa367cc4fcb96f56acdb24d79c6`
 		);
-		const places = placesData.data.results.map((place) => ({
+		const places = placesData.data.results.map((place: any) => ({
 			name: place['formatted'],
 			lat: place.lon,
 			lon: place.lat

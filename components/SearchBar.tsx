@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderRadius: 10,
 		backgroundColor: 'gray'
-	}
+	},
+	resultWrapper: {}
 });
 
 export default SearchBar;

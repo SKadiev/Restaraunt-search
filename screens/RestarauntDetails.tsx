@@ -8,7 +8,6 @@ import { loadSingleRestaurantData } from '../hooks/useResult';
 
 const RestaurantDetails: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const location = navigation.getParam('location');
-	console.log(location);
 
 	const { item, isLoading } = loadSingleRestaurantData({ location: location });
 
@@ -20,7 +19,9 @@ const RestaurantDetails: React.FC<{ navigation: any }> = ({ navigation }) => {
 						source={require('../assets/pancake.jpg')}
 						style={styles.image}
 					/>
-					<Text style={styles.text}>Title : {item.title}</Text>
+					<Text style={styles.text}>
+						{item.title}, {item.street}
+					</Text>
 					<Text style={styles.text}>
 						{item.stars} Rating, {item.reviews} Reviews
 					</Text>

@@ -2,7 +2,7 @@ import { Image, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import { FlatList } from 'react-navigation';
+import { FlatList, withNavigation } from 'react-navigation';
 
 export type RestaurantItem = {
 	id: string;
@@ -14,6 +14,8 @@ export type RestaurantItem = {
 	stars: number;
 	reviews: number;
 	image: string;
+	street: string;
+	distance: number;
 };
 
 export type Props = {
@@ -46,10 +48,11 @@ const RestaurantItem: React.FC<Props> = ({ listTitle, items, navigation }) => {
 								source={require('../assets/pancake.jpg')}
 								style={styles.image}
 							/>
-							<Text style={styles.title}>Title : {item.title}</Text>
+							<Text style={styles.title}>{item.title}</Text>
 							<Text style={styles.review}>
-								{item.stars} Stars, {item.reviews} Reviews
+								{item.stars} Stars, {item.reviews}
 							</Text>
+							<Text style={styles.review}>({item.distance} meters away)</Text>
 						</TouchableOpacity>
 					);
 				}}
@@ -84,4 +87,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default RestaurantItem;
+export default withNavigation(RestaurantItem);

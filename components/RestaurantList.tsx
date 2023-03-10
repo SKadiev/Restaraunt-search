@@ -1,31 +1,44 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+import { RootResultFilterState } from '../store/store';
 import RestaurantItem, { RestaurantItem as ResType } from './RestaurantItem';
 
 export type Props = {
-	navigation: any;
 	restaurantsItems: { [key: string]: ResType[] };
+	filter500: boolean;
+	filter5000: boolean;
+	filter25000: boolean;
 };
 
-const RestaurantList: React.FC<Props> = ({ navigation, restaurantsItems }) => {
+const RestaurantList: React.FC<Props> = ({
+	restaurantsItems,
+	filter500,
+	filter5000,
+	filter25000
+}) => {
+	console.log('render Restaraunt list');
 	return (
 		<View style={styles.container}>
 			<ScrollView>
-				<RestaurantItem
-					navigation={navigation}
-					listTitle='500m Radius Restaurant'
-					items={restaurantsItems['500m']}
-				/>
-				<RestaurantItem
-					navigation={navigation}
-					listTitle='5000m Radius Restaurant'
-					items={restaurantsItems['5000m']}
-				/>
-				<RestaurantItem
-					navigation={navigation}
-					listTitle='25000m Radius Restaurant'
-					items={restaurantsItems['25000m']}
-				/>
+				{filter500 && (
+					<RestaurantItem
+						listTitle='500m Radius Restaurant'
+						items={restaurantsItems['500m']}
+					/>
+				)}
+				{filter5000 && (
+					<RestaurantItem
+						listTitle='5000m Radius Restaurant'
+						items={restaurantsItems['5000m']}
+					/>
+				)}
+				{filter25000 && (
+					<RestaurantItem
+						listTitle='25000m Radius Restaurant'
+						items={restaurantsItems['25000m']}
+					/>
+				)}
 			</ScrollView>
 		</View>
 	);
@@ -33,7 +46,7 @@ const RestaurantList: React.FC<Props> = ({ navigation, restaurantsItems }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		marginTop: 40
+		marginTop: 10
 	}
 });
 
