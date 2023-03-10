@@ -72,8 +72,9 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		marginVertical: 10,
 		textAlign: 'center',
+		// alignSelf: 'center',
 		borderWidth: 2,
-		borderRadius: 10,
+		height: 50,
 		backgroundColor: 'gray'
 	},
 	resultWrapper: {}
