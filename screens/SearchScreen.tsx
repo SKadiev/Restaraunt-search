@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+	View,
+	StyleSheet,
+	Text,
+	ScrollView,
+	PermissionsAndroid
+} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
-import { NavigationProvider } from 'react-navigation';
 import { useSelector } from 'react-redux';
 import RestaurantList from '../components/RestaurantList';
 import ResultFilter from '../components/ResultFilter';
@@ -11,6 +16,9 @@ import { RootResultFilterState, store } from '../store/store';
 export type Props = {
 	navigation: any;
 };
+import * as Location from 'expo-location';
+import { LocationObject } from 'expo-location/build/Location.types';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export type SearchLocationData = {
 	name: string;
@@ -24,6 +32,9 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		lat: '21.4316495',
 		lon: '41.9960924'
 	});
+	console.log(searchPlaceData);
+	const [location, setLocation] = useState<null | LocationObject>(null);
+	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
 	const onSeachPlace = (searhPlaceData: SearchLocationData) => {
 		setSearchPlaceData(searhPlaceData);
@@ -46,6 +57,23 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		filter25000
 	);
 
+	const getYourLocation = async () => {
+		let { status } = await Location.requestForegroundPermissionsAsync();
+		if (status !== 'granted') {
+			setErrorMsg('Permission to access location was denied');
+			return;
+		}
+
+		let location = await Location.getCurrentPositionAsync({});
+		console.log('run');
+		setLocation(location);
+		setSearchPlaceData({
+			name: 'Your place',
+			lat: location.coords.longitude.toString(),
+			lon: location.coords.latitude.toString()
+		});
+	};
+
 	return (
 		<View style={styles.container}>
 			<SearchBar onSearchChange={onSeachPlace} />
@@ -55,6 +83,9 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 				filter5000={filter5000}
 				filter25000={filter25000}
 			/>
+			<TouchableOpacity onPress={getYourLocation} style={styles.nearbyBtn}>
+				<Text style={styles.nearbyBtnText}>Get Restaurants Near you!</Text>
+			</TouchableOpacity>
 			<Spinner
 				visible={isLoading}
 				textContent={'Loading...'}
@@ -89,6 +120,17 @@ const styles = StyleSheet.create({
 	},
 	checkBoxContainer: {
 		flexDirection: 'row'
+	},
+	nearbyBtn: {
+		marginTop: 30,
+		height: 50,
+		fontSize: 22,
+		backgroundColor: 'red',
+		padding: 10,
+		borderRadius: 10
+	},
+	nearbyBtnText: {
+		fontSize: 22
 	}
 });
 

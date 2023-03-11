@@ -15,6 +15,7 @@ export type RestaurantItem = {
 	reviews: number;
 	image: string;
 	street: string;
+	distance: string;
 };
 
 export type Props = {
