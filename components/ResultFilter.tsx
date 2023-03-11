@@ -28,7 +28,7 @@ const ResultFilter: React.FC<Props> = ({
 				isChecked={filter500}
 				fillColor='red'
 				unfillColor='#FFFFFF'
-				text='500 meters'
+				text='500m'
 				iconStyle={{ borderColor: 'red' }}
 				innerIconStyle={{ borderWidth: 2 }}
 				onPress={(isChecked: boolean) => {
@@ -40,7 +40,7 @@ const ResultFilter: React.FC<Props> = ({
 				isChecked={filter5000}
 				fillColor='red'
 				unfillColor='#FFFFFF'
-				text='5000 meters'
+				text='5000m'
 				iconStyle={{ borderColor: 'red' }}
 				innerIconStyle={{ borderWidth: 2 }}
 				onPress={(isChecked: boolean) => {
@@ -52,7 +52,7 @@ const ResultFilter: React.FC<Props> = ({
 				isChecked={filter25000}
 				fillColor='red'
 				unfillColor='#FFFFFF'
-				text='25000 meters'
+				text='25000m'
 				iconStyle={{ borderColor: 'red' }}
 				innerIconStyle={{ borderWidth: 2 }}
 				onPress={(isChecked: boolean) => {
@@ -66,9 +66,10 @@ const ResultFilter: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
 	checkBoxContainer: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'stretch'
 	},
-	checkbox: { marginRight: 10 }
+	checkbox: { flex: 1 }
 });
 
 export default ResultFilter;
