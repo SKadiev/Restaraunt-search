@@ -4,10 +4,14 @@ import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
 import { View } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { LocationNavigateProps } from '../components/RestaurantItem';
 import { loadSingleRestaurantData } from '../hooks/useResult';
+import { useRoute } from '@react-navigation/native';
 
-const RestaurantDetails: React.FC<{ navigation: any }> = ({ navigation }) => {
-	const location = navigation.getParam('location');
+const RestaurantDetails: React.FC = () => {
+	const route = useRoute<LocationNavigateProps>();
+	console.log(route);
+	const location = route.params.location;
 
 	const { item, isLoading } = loadSingleRestaurantData({ location: location });
 

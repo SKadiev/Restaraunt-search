@@ -2,5 +2,6 @@
 	"files.autoSave": "onWindowChange",
 	"editor.tabSize": 2,
 	"editor.insertSpaces": true,
-	"editor.detectIndentation": true
+	"editor.detectIndentation": true,
+	"cSpell.words": ["Restaraunt"]
 }

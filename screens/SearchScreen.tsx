@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-	View,
-	StyleSheet,
-	Text,
-	ScrollView,
-	PermissionsAndroid
-} from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { useSelector } from 'react-redux';
 import RestaurantList from '../components/RestaurantList';
 import ResultFilter from '../components/ResultFilter';
 import SearchBar from '../components/SearchBar';
 import useResult from '../hooks/useResult';
-import { RootResultFilterState, store } from '../store/store';
+import { RootResultState, store } from '../store/store';
 export type Props = {
 	navigation: any;
 };
@@ -27,6 +21,7 @@ export type SearchLocationData = {
 };
 
 const SearchScreen: React.FC<Props> = ({ navigation }) => {
+	console.log(navigation);
 	const [searchPlaceData, setSearchPlaceData] = useState<SearchLocationData>({
 		name: 'Init',
 		lat: '21.4316495',
@@ -41,13 +36,13 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 	};
 
 	const filter500 = useSelector(
-		(state: RootResultFilterState) => state.resultFilter.filter500
+		(state: RootResultState) => state.resultFilter.filter500
 	);
 	const filter5000 = useSelector(
-		(state: RootResultFilterState) => state.resultFilter.filter5000
+		(state: RootResultState) => state.resultFilter.filter5000
 	);
 	const filter25000 = useSelector(
-		(state: RootResultFilterState) => state.resultFilter.filter25000
+		(state: RootResultState) => state.resultFilter.filter25000
 	);
 
 	const { restaurantsRadiusItems, isLoading } = useResult(
@@ -65,7 +60,6 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		}
 
 		let location = await Location.getCurrentPositionAsync({});
-		console.log('run');
 		setLocation(location);
 		setSearchPlaceData({
 			name: 'Your place',

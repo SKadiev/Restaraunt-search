@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
-import { RootResultFilterState } from '../store/store';
 import RestaurantItem, { RestaurantItem as ResType } from './RestaurantItem';
 
 export type Props = {

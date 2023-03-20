@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { View, StyleSheet } from 'react-native';
-import { RootResultFilterState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	check25000,
