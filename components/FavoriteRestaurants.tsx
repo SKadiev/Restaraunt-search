@@ -14,13 +14,13 @@ type Props = {
 };
 
 const FavoriteRestaurants: React.FC<Props> = ({ items }) => {
-	console.log(items);
+	console.log(items[0]);
 	return (
 		<View style={styles.container}>
 			<Text>FavoriteRestaurants</Text>
 			<FlatList
-				horizontal
-				showsHorizontalScrollIndicator={false}
+				// horizontal
+				showsVerticalScrollIndicator={false}
 				style={styles.container}
 				data={items}
 				keyExtractor={(item, index) => item.id}
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontWeight: 'bold',
-		alignSelf: 'center',
-		color: 'blue'
+		alignSelf: 'center'
+		// color: 'blue'
 	},
 	favoriteIconWrapper: {
 		flexDirection: 'row',
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
 		paddingTop: 3
 	},
 	favoriteText: {
-		flex: 2,
 		marginLeft: 5,
 		// alignSelf: 'center',
 		textAlign: 'center'
