@@ -14,7 +14,6 @@ type Props = {
 };
 
 const FavoriteRestaurants: React.FC<Props> = ({ items }) => {
-	console.log(items[0]);
 	return (
 		<View style={styles.container}>
 			<Text>FavoriteRestaurants</Text>

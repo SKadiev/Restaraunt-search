@@ -11,18 +11,21 @@ type Props = {
 };
 
 const RestaurantDetails: FC<Props> = ({ item }) => {
-	const [isFavorite, setIsFavorite] = useState<boolean>(false);
+	const [isFavorite, setIsFavorite] = useState<boolean>(item.isFavorite);
 	const dispatch = useDispatch();
 
 	const toggleFavorite = () => {
 		setIsFavorite((isFavoriteState) => !isFavoriteState);
 		dispatch(toggleFavoriteRestaurant(item));
 	};
+	if (item.isFavorite) {
+		console.log('IS FAVORITE ', item);
+	}
 
 	return (
 		<>
 			<View style={styles.favoriteIconWrapper}>
-				{isFavorite ? (
+				{item.isFavorite ? (
 					<MaterialIcons
 						name='favorite'
 						style={styles.favoriteIcon}

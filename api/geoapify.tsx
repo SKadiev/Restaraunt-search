@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import { RestaurantItem } from '../components/RestaurantItem';
+import { RootResultState } from '../store/store';
 
 export const geoapify = axios.create({
 	baseURL: 'https://api.geoapify.com/v2',
@@ -16,14 +18,20 @@ export type LocationType = {
 export const loadRadiusRestaurants = async (
 	radius = 500,
 	latitude: string = '21.4316495',
-	longitude: string = '41.9960924'
+	longitude: string = '41.9960924',
+	favorites: RestaurantItem[] = []
 ) => {
-	console.log('filtered called with radius' + radius);
 	const radius500Res = await geoapify.get(
 		`/places?categories=catering.restaurant&filter=circle:${latitude},${longitude},${radius}&bias=proximity:${latitude},${longitude}&lang=en&limit=500&apiKey=34f01aa367cc4fcb96f56acdb24d79c6`
 	);
+
 	const radiusRestaurantData = radius500Res.data.features.map(
 		(restaurant: any, index: number) => {
+			const isFavorite = favorites.find(
+				(favoriteRestaurant) =>
+					favoriteRestaurant.id ===
+					restaurant.properties.name + restaurant.properties.street
+			);
 			return {
 				id: restaurant.properties.name + restaurant.properties.street,
 				title: restaurant.properties.name,
@@ -35,7 +43,8 @@ export const loadRadiusRestaurants = async (
 				reviews: 100,
 				image: '',
 				street: restaurant.properties.street,
-				distance: restaurant.properties.distance
+				distance: restaurant.properties.distance,
+				favorite: isFavorite ? true : false
 			};
 		}
 	);

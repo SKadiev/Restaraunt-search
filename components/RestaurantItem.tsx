@@ -16,6 +16,7 @@ export type RestaurantItem = {
 	image: string;
 	street: string;
 	distance?: string;
+	isFavorite: boolean;
 };
 
 export type LocationNavigateProps = {
@@ -36,6 +37,7 @@ export type Props = {
 };
 
 const RestaurantItem: React.FC<Props> = ({ listTitle, items }) => {
+	console.log(items);
 	const navigation = useNavigation<LocationNavigateProps>();
 	return (
 		<View style={styles.container}>

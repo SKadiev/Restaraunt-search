@@ -11,10 +11,7 @@ const RootScreen = () => {
 
 	return (
 		<>
-			<Drawer.Navigator
-				// screenOptions={{ headerShown: false }}
-				useLegacyImplementation
-			>
+			<Drawer.Navigator useLegacyImplementation>
 				<Drawer.Screen name='Home' component={HomeLayoutTabs} />
 				<Drawer.Screen name='About' component={EmptyScreen} />
 			</Drawer.Navigator>

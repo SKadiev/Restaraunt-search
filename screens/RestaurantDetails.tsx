@@ -10,7 +10,6 @@ import { useRoute } from '@react-navigation/native';
 
 const RestaurantDetails: React.FC = () => {
 	const route = useRoute<LocationNavigateProps>();
-	console.log(route);
 	const location = route.params.location;
 
 	const { item, isLoading } = loadSingleRestaurantData({ location: location });
@@ -49,7 +48,6 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '50%',
 		borderRadius: 10,
-		// padding: 10,
 		margin: 10
 	},
 	image: {

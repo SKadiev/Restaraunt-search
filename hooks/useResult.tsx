@@ -6,6 +6,8 @@ import {
 } from '../api/geoapify';
 import { SearchLocationData } from '../screens/SearchScreen';
 import { RestaurantItem as ResType } from '../components/RestaurantItem';
+import { useSelector } from 'react-redux';
+import { RootResultState } from '../store/store';
 
 const RADIUS_RESTAURANTS: { '500m': []; '5000m': []; '25000m': [] } = {
 	'500m': [],
@@ -24,7 +26,9 @@ export default (
 	const [isLoading, setIsLoading] = useState(false);
 
 	const { lat, lon } = searchData;
-
+	const favorites = useSelector(
+		(state: RootResultState) => state.favoriteRestaurants.items
+	);
 	const resLength =
 		restaurantsRadiusItems['500m'].length +
 		restaurantsRadiusItems['5000m'].length +
@@ -37,17 +41,17 @@ export default (
 			let radius500, radius5000, radius25000;
 
 			if (filter500) {
-				radius500 = await loadRadiusRestaurants(500, lat, lon);
+				radius500 = await loadRadiusRestaurants(500, lat, lon, favorites);
 			} else {
 				radius500 = [];
 			}
 			if (filter5000) {
-				radius5000 = await loadRadiusRestaurants(5000, lat, lon);
+				radius5000 = await loadRadiusRestaurants(5000, lat, lon, favorites);
 			} else {
 				radius5000 = [];
 			}
 			if (filter25000) {
-				radius25000 = await loadRadiusRestaurants(25000, lat, lon);
+				radius25000 = await loadRadiusRestaurants(25000, lat, lon, favorites);
 			} else {
 				radius25000 = [];
 			}
@@ -61,7 +65,7 @@ export default (
 		};
 
 		load();
-	}, [lat, lon, filter500, filter5000, filter25000]);
+	}, [lat, lon, favorites, filter500, filter5000, filter25000]);
 
 	return {
 		restaurantsRadiusItems,

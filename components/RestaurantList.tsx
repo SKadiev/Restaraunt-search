@@ -15,7 +15,6 @@ const RestaurantList: React.FC<Props> = ({
 	filter5000,
 	filter25000
 }) => {
-	console.log('render Restaraunt list');
 	return (
 		<View style={styles.container}>
 			<ScrollView>

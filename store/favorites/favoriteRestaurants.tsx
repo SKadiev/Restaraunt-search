@@ -1,11 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RestaurantItem } from '../../components/RestaurantItem';
 import { setItemObject as setItemObjectStorage } from '../../asyncStorage/setItemObject';
-import { getItemObject } from '../../asyncStorage/getItemObject';
-import { useDispatch } from 'react-redux';
-
-const dispatch = useDispatch();
 
 let initStateList: RestaurantItem[] | [] = [];
 
@@ -20,15 +16,6 @@ const initialState: FavoriteRestaurantsState = {
 	status: 'idle',
 	error: null
 };
-
-export const loadFavoriteStorage = createAsyncThunk(
-	'favoriteRestaurants/loadStorage',
-	async () => {
-		const response = await getItemObject('favoriteRestaurants');
-		console.log(response);
-		return response;
-	}
-);
 
 export const favoriteRestaurantsSlice = createSlice({
 	name: 'favoriteRestaurants',
@@ -52,24 +39,16 @@ export const favoriteRestaurantsSlice = createSlice({
 			}
 			setItemObjectStorage(newState, 'favoriteRestaurants');
 			state.items = newState;
+		},
+		setFavoriteRestaurants: (
+			state,
+			action: PayloadAction<RestaurantItem[]>
+		) => {
+			state.items = action.payload;
 		}
-	},
-	extraReducers(builder) {
-		builder
-			.addCase(loadFavoriteStorage.pending, (state, action) => {
-				state.status = 'loading';
-			})
-			.addCase(loadFavoriteStorage.fulfilled, (state, action) => {
-				state.status = 'succeeded';
-				state.posts = state.posts.concat(action.payload);
-			})
-			.addCase(loadFavoriteStorage.rejected, (state, action) => {
-				state.status = 'failed';
-				state.error = action.error.message;
-			});
 	}
 });
-// dispatch(loadFavoriteStorage());
-export const { toggleFavoriteRestaurant } = favoriteRestaurantsSlice.actions;
 
+export const { toggleFavoriteRestaurant, setFavoriteRestaurants } =
+	favoriteRestaurantsSlice.actions;
 export default favoriteRestaurantsSlice.reducer;

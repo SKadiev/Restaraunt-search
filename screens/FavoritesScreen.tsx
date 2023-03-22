@@ -7,7 +7,6 @@ const FavoritesScreen = () => {
 	const favorites = useSelector(
 		(state: RootResultState) => state.favoriteRestaurants.items
 	);
-	console.log('favorites ', favorites);
 	return (
 		<View style={styles.container}>
 			<FavoriteRestaurants items={favorites} />
@@ -18,8 +17,6 @@ const FavoritesScreen = () => {
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		// justifyContent: 'flex-start',
-		// marginLeft: 10,
 		flex: 1
 	}
 });

@@ -11,9 +11,10 @@ export type Props = {
 	navigation: any;
 };
 import * as Location from 'expo-location';
-import { LocationObject } from 'expo-location/build/Location.types';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { getItemObject } from '../asyncStorage/getItemObject';
+import { setFavoriteRestaurants } from '../store/favorites/favoriteRestaurants';
+import { useDispatch } from 'react-redux';
 export type SearchLocationData = {
 	name: string;
 	lat: string;
@@ -21,15 +22,25 @@ export type SearchLocationData = {
 };
 
 const SearchScreen: React.FC<Props> = ({ navigation }) => {
-	console.log(navigation);
+	const dispatch = useDispatch();
 	const [searchPlaceData, setSearchPlaceData] = useState<SearchLocationData>({
 		name: 'Init',
 		lat: '21.4316495',
 		lon: '41.9960924'
 	});
-	console.log(searchPlaceData);
-	const [location, setLocation] = useState<null | LocationObject>(null);
+	// const [location, setLocation] = useState<null | LocationObject>(null);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+	useEffect(() => {
+		const loadFavoriteStorage = async () => {
+			const favoriteRestaurantsStorage = await getItemObject(
+				'favoriteRestaurants'
+			);
+
+			dispatch(setFavoriteRestaurants(favoriteRestaurantsStorage));
+		};
+		loadFavoriteStorage();
+	}, []);
 
 	const onSeachPlace = (searhPlaceData: SearchLocationData) => {
 		setSearchPlaceData(searhPlaceData);
@@ -60,7 +71,6 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		}
 
 		let location = await Location.getCurrentPositionAsync({});
-		setLocation(location);
 		setSearchPlaceData({
 			name: 'Your place',
 			lat: location.coords.longitude.toString(),
