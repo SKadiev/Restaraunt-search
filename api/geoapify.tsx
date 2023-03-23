@@ -25,16 +25,16 @@ export const loadRadiusRestaurants = async (
 		`/places?categories=catering.restaurant&filter=circle:${latitude},${longitude},${radius}&bias=proximity:${latitude},${longitude}&lang=en&limit=500&apiKey=34f01aa367cc4fcb96f56acdb24d79c6`
 	);
 
-	console.log('pushta');
 	const radiusRestaurantData = radius500Res.data.features.map(
 		(restaurant: any, index: number) => {
+			// console.log(favorites[0]);
 			const isFavorite = favorites.find(
 				(favoriteRestaurant) =>
 					favoriteRestaurant.id ===
-					restaurant.properties.name + restaurant.properties.street
+					restaurant.properties.lat + ',' + restaurant.properties.lon
 			);
 			return {
-				id: restaurant.properties.name + restaurant.properties.street,
+				id: restaurant.properties.lat + ',' + restaurant.properties.lon,
 				title: restaurant.properties.name,
 				location: {
 					latitude: restaurant.properties.lat,
@@ -65,11 +65,11 @@ export const loadSingleRestaurant = async (
 	const restaurant = restaurantData.data.results[0];
 	const isFavorite = favorites.find(
 		(favoriteRestaurant) =>
-			favoriteRestaurant.id === restaurant.name + restaurant.street
+			favoriteRestaurant.id === restaurant.lat + ',' + restaurant.lon
 	);
 	console.log(isFavorite);
 	return {
-		id: restaurant.name + restaurant.street,
+		id: restaurant.lat + ',' + restaurant.lon,
 		title: restaurant.name,
 		location: {
 			latitude: restaurant.lat,

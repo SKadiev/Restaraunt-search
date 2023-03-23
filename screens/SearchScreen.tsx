@@ -7,6 +7,8 @@ import ResultFilter from '../components/ResultFilter';
 import SearchBar from '../components/SearchBar';
 import useResult from '../hooks/useResult';
 import { RootResultState } from '../store/store';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 export type Props = {
 	navigation: any;
 };
@@ -15,6 +17,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getItemObject } from '../asyncStorage/getItemObject';
 import { setFavoriteRestaurants } from '../store/favorites/favoriteRestaurants';
 import { useDispatch } from 'react-redux';
+import MapView, { Marker } from 'react-native-maps';
+import { RestaurantItem } from '../components/RestaurantItem';
 export type SearchLocationData = {
 	name: string;
 	lat: string;
@@ -30,6 +34,7 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 	});
 	// const [location, setLocation] = useState<null | LocationObject>(null);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
+	const [mapOpen, setMapOpen] = useState(false);
 
 	useEffect(() => {
 		const loadFavoriteStorage = async () => {
@@ -80,6 +85,24 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		});
 	};
 
+	let mapData = {
+		latitude: +searchPlaceData.lon,
+		longitude: +searchPlaceData.lat,
+		latitudeDelta: 0.0922,
+		longitudeDelta: 0.0421
+	};
+
+	const switchToListView = () => {
+		if (mapOpen) {
+			setMapOpen(false);
+		}
+	};
+	const switchToMapView = () => {
+		if (!mapOpen) {
+			setMapOpen(true);
+		}
+	};
+
 	return (
 		<View style={styles.container}>
 			<SearchBar onSearchChange={onSearchPlace} />
@@ -92,6 +115,25 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 			<TouchableOpacity onPress={getYourLocation} style={styles.nearbyBtn}>
 				<Text style={styles.nearbyBtnText}>Get Restaurants Near you!</Text>
 			</TouchableOpacity>
+			<View style={styles.viewChoseContainer}>
+				<TouchableOpacity
+					onPress={switchToListView}
+					style={{ flexDirection: 'row', alignItems: 'center' }}
+				>
+					<MaterialCommunityIcons
+						name='format-list-bulleted-square'
+						size={25}
+					/>
+					<Text>List view</Text>
+				</TouchableOpacity>
+				<TouchableOpacity
+					onPress={switchToMapView}
+					style={{ flexDirection: 'row', alignItems: 'center' }}
+				>
+					<MaterialCommunityIcons name='google-maps' size={25} />
+					<Text>Map view</Text>
+				</TouchableOpacity>
+			</View>
 			<Spinner
 				visible={isLoading}
 				textContent={'Loading...'}
@@ -99,13 +141,59 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 			/>
 			{!isLoading && (
 				<ScrollView>
-					<RestaurantList
-						filter500={filter500}
-						filter5000={filter5000}
-						filter25000={filter25000}
-						restaurantsItems={restaurantsRadiusItems}
-					/>
+					{!mapOpen && (
+						<RestaurantList
+							filter500={filter500}
+							filter5000={filter5000}
+							filter25000={filter25000}
+							restaurantsItems={restaurantsRadiusItems}
+						/>
+					)}
 				</ScrollView>
+			)}
+
+			{mapOpen && (
+				<MapView style={styles.map} initialRegion={mapData}>
+					{restaurantsRadiusItems['500m'].map(
+						(marker: RestaurantItem, index) => (
+							<Marker
+								key={marker.location.latitude + ',' + marker.location.longitude}
+								coordinate={{
+									latitude: +marker.location.latitude,
+									longitude: +marker.location.longitude
+								}}
+								title={marker.title}
+								description={marker.title}
+							/>
+						)
+					)}
+					{restaurantsRadiusItems['5000m'].map(
+						(marker: RestaurantItem, index) => (
+							<Marker
+								key={marker.location.latitude + ',' + marker.location.longitude}
+								coordinate={{
+									latitude: +marker.location.latitude,
+									longitude: +marker.location.longitude
+								}}
+								title={marker.title}
+								description={marker.title}
+							/>
+						)
+					)}
+					{restaurantsRadiusItems['25000m'].map(
+						(marker: RestaurantItem, index) => (
+							<Marker
+								key={marker.location.latitude + ',' + marker.location.longitude}
+								coordinate={{
+									latitude: +marker.location.latitude,
+									longitude: +marker.location.longitude
+								}}
+								title={marker.title}
+								description={marker.title}
+							/>
+						)
+					)}
+				</MapView>
 			)}
 		</View>
 	);
@@ -129,14 +217,25 @@ const styles = StyleSheet.create({
 	},
 	nearbyBtn: {
 		marginTop: 30,
-		height: 50,
-		fontSize: 22,
+		// height: 50,
+		fontSize: 18,
 		backgroundColor: 'red',
 		padding: 10,
 		borderRadius: 10
 	},
 	nearbyBtnText: {
 		fontSize: 22
+	},
+	map: {
+		width: '100%',
+		height: '100%'
+	},
+	viewChoseContainer: {
+		flexDirection: 'row',
+		// alignItems: 'flex-start',
+		justifyContent: 'space-around',
+		width: '100%',
+		marginTop: 20
 	}
 });
 
