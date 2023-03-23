@@ -28,6 +28,7 @@ export type LocationNavigateProps = {
 			latitude: string;
 			longitude: string;
 		};
+		item: RestaurantItem;
 	};
 };
 
@@ -54,7 +55,10 @@ const RestaurantItem: React.FC<Props> = ({ listTitle, items }) => {
 						<TouchableOpacity style={styles.restaurantItem}>
 							<TouchableOpacity
 								onPress={() =>
-									navigation.navigate('Details', { location: item.location })
+									navigation.navigate('Details', {
+										location: item.location,
+										item: item
+									})
 								}
 							>
 								<Image

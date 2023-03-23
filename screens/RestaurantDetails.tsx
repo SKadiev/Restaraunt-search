@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
@@ -8,16 +8,27 @@ import { LocationNavigateProps } from '../components/RestaurantItem';
 import { loadSingleRestaurantData } from '../hooks/useResult';
 import { useRoute } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
+import MapView, { Marker } from 'react-native-maps';
 
 const RestaurantDetails: React.FC = () => {
 	const route = useRoute<LocationNavigateProps>();
 	const location = route.params.location;
+	const item = route.params.item;
+	const [isLoading, setIsLoading] = useState(true);
 
-	const { item, isLoading } = loadSingleRestaurantData({ location: location });
+	useEffect(() => {
+		const id = setTimeout(() => {
+			setIsLoading(false);
+		}, 300);
+
+		return () => {
+			clearTimeout(id);
+		};
+	}, []);
 
 	return (
 		<View style={styles.restaurantItem}>
-			{item ? (
+			{!isLoading ? (
 				<>
 					<Image
 						source={require('../assets/pancake.jpg')}
@@ -43,6 +54,25 @@ const RestaurantDetails: React.FC = () => {
 						)}{' '}
 						{item.stars} Rating, {item.reviews} Reviews
 					</Text>
+					<MapView
+						style={styles.map}
+						initialRegion={{
+							latitude: +item.location.latitude,
+							longitude: +item.location.longitude,
+							latitudeDelta: 0.0922,
+							longitudeDelta: 0.0421
+						}}
+					>
+						<Marker
+							key={item.location.latitude + ',' + item.location.longitude}
+							coordinate={{
+								latitude: +item.location.latitude,
+								longitude: +item.location.longitude
+							}}
+							title={item.title}
+							description={item.title}
+						/>
+					</MapView>
 				</>
 			) : (
 				<Spinner
@@ -61,9 +91,10 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		marginVertical: 5,
 		width: '100%',
-		height: '50%',
+		height: '30%',
 		borderRadius: 10,
 		margin: 10
+		// zIndex: 1
 	},
 	image: {
 		width: '100%',
@@ -79,6 +110,12 @@ const styles = StyleSheet.create({
 	favoriteIcon: {
 		// alignSelf: 'stretch',
 		paddingTop: 3
+	},
+	map: {
+		width: '100%',
+		height: '80%',
+		zIndex: 200,
+		backgroundColor: 'red'
 	}
 });
 
