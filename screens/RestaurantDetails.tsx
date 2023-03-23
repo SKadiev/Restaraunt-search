@@ -7,6 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { LocationNavigateProps } from '../components/RestaurantItem';
 import { loadSingleRestaurantData } from '../hooks/useResult';
 import { useRoute } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const RestaurantDetails: React.FC = () => {
 	const route = useRoute<LocationNavigateProps>();
@@ -26,6 +27,20 @@ const RestaurantDetails: React.FC = () => {
 						{item.title}, {item.street}
 					</Text>
 					<Text style={styles.text}>
+						{item.favorite ? (
+							<MaterialIcons
+								name='favorite'
+								style={styles.favoriteIcon}
+								size={30}
+								color='#f2636e'
+							/>
+						) : (
+							<MaterialIcons
+								name='favorite-border'
+								style={styles.favoriteIcon}
+								size={30}
+							/>
+						)}{' '}
 						{item.stars} Rating, {item.reviews} Reviews
 					</Text>
 				</>
@@ -60,6 +75,10 @@ const styles = StyleSheet.create({
 	},
 	spinnerTextStyle: {
 		color: '#FFF'
+	},
+	favoriteIcon: {
+		// alignSelf: 'stretch',
+		paddingTop: 3
 	}
 });
 

@@ -78,11 +78,14 @@ export const loadSingleRestaurantData = (locationData: LocationType) => {
 	const [item, setItem] = useState<ResType | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const { latitude, longitude } = locationData.location;
-
+	const favorites = useSelector(
+		(state: RootResultState) => state.favoriteRestaurants.items
+	);
+	console.log(favorites);
 	useEffect(() => {
 		setIsLoading(true);
 		const load = async () => {
-			const item = await loadSingleRestaurant(locationData);
+			const item = await loadSingleRestaurant(locationData, favorites);
 			setItem(item);
 			setIsLoading(false);
 		};

@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
 	favoriteIcon: {
 		alignSelf: 'stretch',
 		paddingTop: 3
+		// backgroundColor: '#3f729b'
 	},
 	favoriteText: {
 		marginLeft: 5,

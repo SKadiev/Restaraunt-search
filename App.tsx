@@ -14,14 +14,14 @@ export default function App() {
 			<NavigationContainer>
 				<Stack.Navigator
 					initialRouteName='Root'
-					screenOptions={{ headerShown: false }}
+					// screenOptions={{ headerShown: false }}
 				>
 					<Stack.Screen name='Root' component={RootScreen} />
-					{/* <Stack.Screen
+					<Stack.Screen
 						name='Details'
 						component={RestaurantDetails}
 						options={{ title: 'Restaurant Details' }}
-					/> */}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</Provider>

@@ -1,36 +1,32 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { RestaurantItem } from './RestaurantItem';
 import { toggleFavoriteRestaurant } from '../store/favorites/favoriteRestaurants';
 import { useDispatch } from 'react-redux';
-import { color } from 'react-native-reanimated';
 
 type Props = {
 	item: RestaurantItem;
 };
 
 const RestaurantDetails: FC<Props> = ({ item }) => {
-	const [isFavorite, setIsFavorite] = useState<boolean>(item.isFavorite);
 	const dispatch = useDispatch();
+	const { favorite: isFavorite } = item;
 
 	const toggleFavorite = () => {
-		setIsFavorite((isFavoriteState) => !isFavoriteState);
 		dispatch(toggleFavoriteRestaurant(item));
 	};
-	if (item.isFavorite) {
-		console.log('IS FAVORITE ', item);
-	}
 
 	return (
 		<>
 			<View style={styles.favoriteIconWrapper}>
-				{item.isFavorite ? (
+				{isFavorite ? (
 					<MaterialIcons
 						name='favorite'
 						style={styles.favoriteIcon}
 						size={30}
 						onPress={toggleFavorite}
+						color='#f2636e'
 					/>
 				) : (
 					<MaterialIcons

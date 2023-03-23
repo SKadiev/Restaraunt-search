@@ -6,7 +6,7 @@ import RestaurantList from '../components/RestaurantList';
 import ResultFilter from '../components/ResultFilter';
 import SearchBar from '../components/SearchBar';
 import useResult from '../hooks/useResult';
-import { RootResultState, store } from '../store/store';
+import { RootResultState } from '../store/store';
 export type Props = {
 	navigation: any;
 };
@@ -33,16 +33,18 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 
 	useEffect(() => {
 		const loadFavoriteStorage = async () => {
-			const favoriteRestaurantsStorage = await getItemObject(
+			let favoriteRestaurantsStorage = await getItemObject(
 				'favoriteRestaurants'
 			);
+			if (favoriteRestaurantsStorage === null)
+				[(favoriteRestaurantsStorage = [])];
 
 			dispatch(setFavoriteRestaurants(favoriteRestaurantsStorage));
 		};
 		loadFavoriteStorage();
 	}, []);
 
-	const onSeachPlace = (searhPlaceData: SearchLocationData) => {
+	const onSearchPlace = (searhPlaceData: SearchLocationData) => {
 		setSearchPlaceData(searhPlaceData);
 	};
 
@@ -80,7 +82,7 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 
 	return (
 		<View style={styles.container}>
-			<SearchBar onSearchChange={onSeachPlace} />
+			<SearchBar onSearchChange={onSearchPlace} />
 			<Text>Radius filters</Text>
 			<ResultFilter
 				filter500={filter500}
