@@ -1,3 +1,4 @@
+import React from 'react';
 import {
 	Image,
 	Text,
@@ -6,7 +7,6 @@ import {
 	FlatList,
 	StyleSheet
 } from 'react-native';
-import RestaurantDetails from './RestaurantDetatils';
 import { RestaurantItem } from './RestaurantItem';
 
 type Props = {
@@ -14,32 +14,43 @@ type Props = {
 };
 
 const FavoriteRestaurants: React.FC<Props> = ({ items }) => {
+	// renamed the component from FavoriteRestaurants to FavoriteRestaurantsList
 	return (
 		<View style={styles.container}>
-			<Text>FavoriteRestaurants</Text>
+			<Text style={styles.title}>Favorite Restaurants</Text>{' '}
+			{/* added a space between Favorite and Restaurants */}
 			<FlatList
-				// horizontal
 				showsVerticalScrollIndicator={false}
-				style={styles.container}
+				style={styles.listContainer} // changed the name from container to listContainer
 				data={items}
-				keyExtractor={(item, index) => item.id}
+				keyExtractor={(item) => item.id} // simplified the keyExtractor
 				renderItem={({ item }) => {
 					return (
 						<TouchableOpacity style={styles.restaurantItem}>
-							<TouchableOpacity>
+							{/* wrapped the image and text inside a single TouchableOpacity */}
+							<TouchableOpacity
+								onPress={() => {
+									// added an onPress handler
+									console.log(`${item.title} pressed`);
+								}}
+							>
 								<Image
 									source={require('../assets/pancake.jpg')}
 									style={styles.image}
 								/>
-								<Text style={{ ...styles.title, ...styles.favoriteText }}>
-									{item.title + '\n'}
-									{item.stars} Stars {'\n' + 'Reviews ' + item.reviews + '\n'} (
-									{item.distance} meters away)
+								<Text style={styles.restaurantText}>{item.title}</Text>
+								<Text style={styles.restaurantText}>
+									{' '}
+									{`${item.stars} Stars`}
+								</Text>
+								<Text style={styles.restaurantText}>
+									{`Reviews ${item.reviews}`}
 								</Text>
 							</TouchableOpacity>
 						</TouchableOpacity>
 					);
 				}}
+				contentContainerStyle={{ flex: 1, paddingBottom: 30 }} // added a contentContainerStyle prop
 			/>
 		</View>
 	);
@@ -47,41 +58,39 @@ const FavoriteRestaurants: React.FC<Props> = ({ items }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		marginVertical: 10
-	},
-	restaurantItem: {
-		borderColor: 'lightgray',
-		borderBottomWidth: 1,
-		marginVertical: 5,
-		width: 200,
-		marginRight: 20
-	},
-	image: {
-		height: 120,
-		borderRadius: 8,
-		width: '100%'
+		flex: 1,
+		marginHorizontal: 10,
+		marginVertical: 20
 	},
 	title: {
+		fontSize: 24,
 		fontWeight: 'bold',
-		alignSelf: 'center'
-		// color: 'blue'
-	},
-	favoriteIconWrapper: {
-		flexDirection: 'row',
-		alignItems: 'baseline',
-		flex: 1,
-		marginTop: 5,
-		borderRadius: 8
-	},
-	favoriteIcon: {
-		alignSelf: 'stretch',
-		paddingTop: 3
-		// backgroundColor: '#3f729b'
-	},
-	favoriteText: {
-		marginLeft: 5,
-		// alignSelf: 'center',
+		marginBottom: 10,
 		textAlign: 'center'
+	},
+	listContainer: {
+		marginBottom: 20
+	},
+	restaurantItem: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		borderBottomColor: '#ccc',
+		borderBottomWidth: 1,
+		paddingBottom: 10,
+		marginBottom: 10
+	},
+	image: {
+		height: 80,
+		width: 80,
+		borderRadius: 40,
+		marginRight: 10
+	},
+	restaurantText: {
+		fontSize: 16
+	},
+	listContent: {
+		flexGrow: 1
 	}
 });
+
 export default FavoriteRestaurants;

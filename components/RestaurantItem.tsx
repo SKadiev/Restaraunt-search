@@ -1,15 +1,21 @@
-import { Image, Text, TouchableOpacity, FlatList } from 'react-native';
-import {} from 'react-native';
-import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
+import React from 'react';
+import {
+	Image,
+	StyleSheet,
+	TouchableOpacity,
+	Text,
+	FlatList,
+	View
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import RestaurantDetails from './RestaurantDetatils';
+import RestaurantDetails from './RestaurantDetails';
+
 export type RestaurantItem = {
 	id: string;
 	title: string;
 	location: {
-		latitude: string;
-		longitude: string;
+		latitude: number;
+		longitude: number;
 	};
 	stars: number;
 	reviews: number;
@@ -25,8 +31,8 @@ export type LocationNavigateProps = {
 	key: string;
 	params: {
 		location: {
-			latitude: string;
-			longitude: string;
+			latitude: number;
+			longitude: number;
 		};
 		item: RestaurantItem;
 	};
@@ -41,9 +47,11 @@ const RestaurantItem: React.FC<Props> = ({ listTitle, items }) => {
 	const navigation = useNavigation<LocationNavigateProps>();
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>
-				{listTitle} - Results({items.length})
-			</Text>
+			{items.length > 0 && (
+				<Text style={styles.title}>
+					{listTitle} - Results({items.length})
+				</Text>
+			)}
 			<FlatList
 				horizontal
 				showsHorizontalScrollIndicator={false}
@@ -52,7 +60,7 @@ const RestaurantItem: React.FC<Props> = ({ listTitle, items }) => {
 				keyExtractor={(item, index) => item.id}
 				renderItem={({ item }) => {
 					return (
-						<TouchableOpacity style={styles.restaurantItem}>
+						<TouchableOpacity style={styles.restaurantItem} key={item.id}>
 							<TouchableOpacity
 								onPress={() =>
 									navigation.navigate('Details', {
@@ -65,7 +73,7 @@ const RestaurantItem: React.FC<Props> = ({ listTitle, items }) => {
 									source={require('../assets/pancake.jpg')}
 									style={styles.image}
 								/>
-								<RestaurantDetails key={item.id} item={item} />
+								<RestaurantDetails item={item} />
 							</TouchableOpacity>
 						</TouchableOpacity>
 					);
