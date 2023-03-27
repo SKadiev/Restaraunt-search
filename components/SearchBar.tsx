@@ -6,10 +6,6 @@ import useSearchSuggestion from '../hooks/useSearchSuggestion';
 import { SearchLocationData } from '../screens/SearchScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export type Props = {
-	onSearchChange: (searchData: SearchLocationData) => void;
-};
-
 const SearchBar: React.FC<Props> = ({ onSearchChange }) => {
 	const [selectedItem, setSelectedItem] = useState<{ query: string }>({
 		query: ''
@@ -21,35 +17,42 @@ const SearchBar: React.FC<Props> = ({ onSearchChange }) => {
 	const data = useSearchSuggestion(selectedItem);
 	return (
 		<View style={styles.container}>
-			<MaterialIcons name='search' size={30} style={styles.searchIcon} />
-			<AutocompleteInput
-				style={styles.autocompleteContainer}
-				hideResults={hideResults}
-				data={data?.result ?? []}
-				value={query}
-				placeholder='Search Restaurant near you'
-				onSubmitEditing={() => {
-					setHideResults(true);
-				}}
-				onChangeText={(text: string) => {
-					setSelectedItem({ query: text }), setHideResults(false);
-				}}
-				flatListProps={{
-					keyExtractor: (_: SearchLocationData, idx: any) => idx,
-					renderItem: ({ item }: { item: SearchLocationData }) => (
-						<TouchableOpacity
-							style={styles.resultWrapper}
-							onPress={() => {
-								onSearchChange(item);
-								setSelectedItem({ query: item.name });
-								setHideResults(true);
-							}}
-						>
-							<Text style={styles.itemText}>{item.name}</Text>
-						</TouchableOpacity>
-					)
-				}}
-			/>
+			<View style={styles.searchBox}>
+				<MaterialIcons name='search' size={20} style={styles.searchIcon} />
+				<AutocompleteInput
+					style={styles.autocompleteContainer}
+					hideResults={hideResults}
+					data={data?.result ?? []}
+					value={query}
+					placeholder='Search Restaurant near you'
+					onSubmitEditing={() => {
+						setHideResults(true);
+					}}
+					onChangeText={(text: string) => {
+						setSelectedItem({ query: text });
+						setHideResults(false);
+					}}
+					flatListProps={{
+						keyExtractor: (_: SearchLocationData, idx: any) => idx,
+						renderItem: ({ item }: { item: SearchLocationData }) => (
+							<TouchableOpacity
+								style={styles.resultWrapper}
+								onPress={() => {
+									onSearchChange(item);
+									setSelectedItem({ query: item.name });
+									setHideResults(true);
+								}}
+							>
+								<Text style={styles.itemText}>{item.name}</Text>
+							</TouchableOpacity>
+						),
+						style: [
+							styles.flatListContainer,
+							!hideResults && styles.showFlatListContainer
+						]
+					}}
+				/>
+			</View>
 		</View>
 	);
 };
@@ -62,29 +65,54 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		marginVertical: 10,
+		backgroundColor: '#F0F0F0',
+		borderRadius: 10,
+		height: 60,
+		width: '100%',
+		justifyContent: 'center',
+		zIndex: 1
+	},
+	searchBox: {
 		flexDirection: 'row',
-		backgroundColor: 'lightgray'
+		alignItems: 'center'
 	},
 	searchIcon: {
-		alignSelf: 'center',
-		marginHorizontal: 5
-		// fontSize: 30
+		color: 'gray',
+		marginHorizontal: 10
 	},
 	autocompleteContainer: {
-		backgroundColor: 'lightgray',
-		borderWidth: 0
+		backgroundColor: '#FFFFFF',
+		borderRadius: 10,
+		borderWidth: 0,
+		paddingLeft: 10,
+		zIndex: 999,
+		width: '100%'
 	},
 	itemText: {
 		fontSize: 18,
-		marginVertical: 10,
-		textAlign: 'center',
-		// alignSelf: 'center',
-		borderWidth: 2,
-		height: 50,
-		backgroundColor: 'gray',
-		marginLeft: 0
+		marginTop: 10,
+		textAlign: 'center'
 	},
-	resultWrapper: {}
+	flatListContainer: {
+		maxHeight: '100%',
+		width: '100%',
+		position: 'absolute',
+		top: 0,
+		left: -10,
+		right: 0,
+		backgroundColor: '#FFFFFF',
+		borderColor: '#D3D3D3',
+		borderWidth: 1,
+		borderRadius: 10,
+		zIndex: 1000,
+		overflow: 'hidden'
+	},
+	showFlatListContainer: {
+		maxHeight: 'auto'
+	},
+	resultWrapper: {
+		marginBottom: 5
+	}
 });
 
 export default SearchBar;

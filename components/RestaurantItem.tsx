@@ -55,12 +55,16 @@ const RestaurantItem: React.FC<Props> = ({ listTitle, items }) => {
 			<FlatList
 				horizontal
 				showsHorizontalScrollIndicator={false}
+				showsVerticalScrollIndicator={false}
 				style={styles.container}
 				data={items}
 				keyExtractor={(item, index) => item.id}
 				renderItem={({ item }) => {
 					return (
-						<TouchableOpacity style={styles.restaurantItem} key={item.id}>
+						<TouchableOpacity
+							style={{ ...styles.restaurantItem, ...styles.listItem }}
+							key={item.id}
+						>
 							<TouchableOpacity
 								onPress={() =>
 									navigation.navigate('Details', {
@@ -102,6 +106,20 @@ const styles = StyleSheet.create({
 	title: {
 		fontWeight: 'bold',
 		alignSelf: 'center'
+	},
+	listItem: {
+		backgroundColor: '#fff',
+		padding: 10,
+		marginVertical: 5,
+		borderRadius: 5,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5
 	}
 });
 

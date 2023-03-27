@@ -12,6 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export type Props = {
 	navigation: any;
 };
+
 import * as Location from 'expo-location';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getItemObject } from '../asyncStorage/getItemObject';
@@ -19,6 +20,7 @@ import { setFavoriteRestaurants } from '../store/favorites/favoriteRestaurants';
 import { useDispatch } from 'react-redux';
 import MapView, { Marker } from 'react-native-maps';
 import { RestaurantItem } from '../components/RestaurantItem';
+
 export type SearchLocationData = {
 	name: string;
 	lat: string;
@@ -83,6 +85,7 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 			lat: location.coords.longitude.toString(),
 			lon: location.coords.latitude.toString()
 		});
+		switchToListView();
 	};
 
 	let mapData = {
@@ -106,14 +109,16 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<SearchBar onSearchChange={onSearchPlace} />
-			<Text>Radius filters</Text>
+			<Text style={{ fontSize: 20 }}>Radius filters</Text>
 			<ResultFilter
 				filter500={filter500}
 				filter5000={filter5000}
 				filter25000={filter25000}
 			/>
 			<TouchableOpacity onPress={getYourLocation} style={styles.nearbyBtn}>
-				<Text style={styles.nearbyBtnText}>Get Restaurants Near you!</Text>
+				<Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
+					Get Restaurants Near you!
+				</Text>
 			</TouchableOpacity>
 			<View style={styles.viewChoseContainer}>
 				<TouchableOpacity
@@ -124,14 +129,14 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 						name='format-list-bulleted-square'
 						size={25}
 					/>
-					<Text>List view</Text>
+					<Text style={{ fontSize: 22, marginLeft: 5 }}>List view</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={switchToMapView}
 					style={{ flexDirection: 'row', alignItems: 'center' }}
 				>
 					<MaterialCommunityIcons name='google-maps' size={25} />
-					<Text>Map view</Text>
+					<Text style={{ fontSize: 22, marginLeft: 5 }}>Map view</Text>
 				</TouchableOpacity>
 			</View>
 			<Spinner
@@ -217,7 +222,6 @@ const styles = StyleSheet.create({
 	},
 	nearbyBtn: {
 		marginTop: 30,
-		// height: 50,
 		fontSize: 18,
 		backgroundColor: 'red',
 		padding: 10,
@@ -232,7 +236,6 @@ const styles = StyleSheet.create({
 	},
 	viewChoseContainer: {
 		flexDirection: 'row',
-		// alignItems: 'flex-start',
 		justifyContent: 'space-around',
 		width: '100%',
 		marginTop: 20

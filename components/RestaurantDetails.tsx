@@ -36,44 +36,35 @@ const RestaurantDetails: FC<Props> = ({ item }) => {
 						onPress={toggleFavorite}
 					/>
 				)}
-				<Text style={{ ...styles.title, ...styles.favoriteText }}>
+				<Text style={styles.title}>
 					{item.title + '\n'}
 					{item.stars} Stars {'\n' + 'Reviews ' + item.reviews + '\n'} (
 					{item.distance} meters away)
 				</Text>
 			</View>
-			{/* <Text style={styles.review}>
-				{item.stars} Stars, {item.reviews} ({item.distance} meters away)
-			</Text> */}
 		</>
 	);
 };
 
 const styles = StyleSheet.create({
 	title: {
-		fontWeight: 'bold'
-		// alignSelf: 'center'
-	},
-	review: {
-		color: 'darkgray',
-		alignSelf: 'center'
+		fontWeight: 'bold',
+		textAlign: 'center',
+		fontSize: 20,
+		marginTop: 10,
+		marginBottom: 10
 	},
 	favoriteIconWrapper: {
 		flexDirection: 'row',
-		alignItems: 'baseline',
-		flex: 1,
+		alignItems: 'center',
 		marginTop: 5,
-		borderRadius: 8
+		borderRadius: 8,
+		padding: 10,
+		backgroundColor: '#FFF'
 	},
 	favoriteIcon: {
-		alignSelf: 'stretch',
 		paddingTop: 3
-	},
-	favoriteText: {
-		flex: 2,
-		marginLeft: 5,
-		// alignSelf: 'center',
-		textAlign: 'center'
 	}
 });
+
 export default RestaurantDetails;
