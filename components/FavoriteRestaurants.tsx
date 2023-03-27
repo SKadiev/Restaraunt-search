@@ -7,6 +7,7 @@ import {
 	FlatList,
 	StyleSheet
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { RestaurantItem } from './RestaurantItem';
 
 type Props = {
@@ -14,10 +15,9 @@ type Props = {
 };
 
 const FavoriteRestaurants: React.FC<Props> = ({ items }) => {
-	// renamed the component from FavoriteRestaurants to FavoriteRestaurantsList
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Favorite Restaurants</Text>{' '}
+			<Text style={styles.title}>Favorite Restaurants</Text>
 			{/* added a space between Favorite and Restaurants */}
 			<FlatList
 				showsVerticalScrollIndicator={false}
@@ -26,27 +26,22 @@ const FavoriteRestaurants: React.FC<Props> = ({ items }) => {
 				keyExtractor={(item) => item.id} // simplified the keyExtractor
 				renderItem={({ item }) => {
 					return (
-						<TouchableOpacity style={styles.restaurantItem}>
-							{/* wrapped the image and text inside a single TouchableOpacity */}
-							<TouchableOpacity
-								onPress={() => {
-									// added an onPress handler
-									console.log(`${item.title} pressed`);
-								}}
-							>
-								<Image
-									source={require('../assets/pancake.jpg')}
-									style={styles.image}
-								/>
-								<Text style={styles.restaurantText}>{item.title}</Text>
-								<Text style={styles.restaurantText}>
-									{' '}
-									{`${item.stars} Stars`}
-								</Text>
-								<Text style={styles.restaurantText}>
-									{`Reviews ${item.reviews}`}
-								</Text>
-							</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.restaurantItem}
+							onPress={() => {
+								// added an onPress handler
+								console.log(`${item.title} pressed`);
+							}}
+						>
+							<Image
+								source={require('../assets/pancake.jpg')}
+								style={styles.image}
+							/>
+							<Text style={styles.restaurantText}>{item.title}</Text>
+							<Text style={styles.restaurantText}>{`${item.stars} Stars`}</Text>
+							<Text style={styles.restaurantText}>
+								{`Reviews ${item.reviews}`}
+							</Text>
 						</TouchableOpacity>
 					);
 				}}
@@ -78,6 +73,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		paddingBottom: 10,
 		marginBottom: 10
+		// width: '100%'
 	},
 	image: {
 		height: 80,
@@ -86,7 +82,8 @@ const styles = StyleSheet.create({
 		marginRight: 10
 	},
 	restaurantText: {
-		fontSize: 16
+		fontSize: 16,
+		marginRight: 5
 	},
 	listContent: {
 		flexGrow: 1

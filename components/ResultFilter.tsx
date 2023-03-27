@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,11 +25,11 @@ const ResultFilter: React.FC<Props> = ({
 		<View style={styles.checkBoxContainer}>
 			<BouncyCheckbox
 				isChecked={filter500}
-				fillColor='red'
+				fillColor='#334756'
 				unfillColor='#FFFFFF'
 				text='500m'
-				iconStyle={{ borderColor: 'red' }}
-				innerIconStyle={{ borderWidth: 2 }}
+				iconStyle={{ borderColor: '#334756' }}
+				textStyle={styles.checkboxText}
 				onPress={(isChecked: boolean) => {
 					dispatch(check500(isChecked));
 				}}
@@ -37,11 +37,11 @@ const ResultFilter: React.FC<Props> = ({
 			/>
 			<BouncyCheckbox
 				isChecked={filter5000}
-				fillColor='red'
+				fillColor='#334756'
 				unfillColor='#FFFFFF'
 				text='5000m'
-				iconStyle={{ borderColor: 'red' }}
-				innerIconStyle={{ borderWidth: 2 }}
+				iconStyle={{ borderColor: '#334756' }}
+				textStyle={styles.checkboxText}
 				onPress={(isChecked: boolean) => {
 					dispatch(check5000(isChecked));
 				}}
@@ -49,11 +49,11 @@ const ResultFilter: React.FC<Props> = ({
 			/>
 			<BouncyCheckbox
 				isChecked={filter25000}
-				fillColor='red'
+				fillColor='#334756'
 				unfillColor='#FFFFFF'
 				text='25000m'
-				iconStyle={{ borderColor: 'red' }}
-				innerIconStyle={{ borderWidth: 2 }}
+				iconStyle={{ borderColor: '#334756' }}
+				textStyle={styles.checkboxText}
 				onPress={(isChecked: boolean) => {
 					dispatch(check25000(isChecked));
 				}}
@@ -68,7 +68,16 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'stretch'
 	},
-	checkbox: { flex: 1 }
+	checkbox: {
+		flex: 1,
+		paddingBottom: 10
+	},
+	checkboxText: {
+		color: '#334756',
+		fontSize: 14,
+		fontWeight: '400',
+		marginLeft: 10
+	}
 });
 
 export default ResultFilter;

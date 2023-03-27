@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import {
+	View,
+	StyleSheet,
+	Text,
+	ScrollView,
+	ImageBackground
+} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { useSelector } from 'react-redux';
 import RestaurantList from '../components/RestaurantList';
@@ -7,7 +13,7 @@ import ResultFilter from '../components/ResultFilter';
 import SearchBar from '../components/SearchBar';
 import useResult from '../hooks/useResult';
 import { RootResultState } from '../store/store';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 export type Props = {
 	navigation: any;
@@ -34,7 +40,6 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		lat: '21.4316495',
 		lon: '41.9960924'
 	});
-	// const [location, setLocation] = useState<null | LocationObject>(null);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [mapOpen, setMapOpen] = useState(false);
 
@@ -106,100 +111,122 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 		}
 	};
 
+	const background = require('../assets/images/restaurant_background.jpg');
+
 	return (
 		<View style={styles.container}>
 			<SearchBar onSearchChange={onSearchPlace} />
-			<Text style={{ fontSize: 20 }}>Radius filters</Text>
+			<Text style={{ fontSize: 20, marginBottom: 5, color: '#fff' }}>
+				Radius filters
+			</Text>
 			<ResultFilter
 				filter500={filter500}
 				filter5000={filter5000}
 				filter25000={filter25000}
 			/>
-			<TouchableOpacity onPress={getYourLocation} style={styles.nearbyBtn}>
-				<Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
-					Get Restaurants Near you!
-				</Text>
-			</TouchableOpacity>
-			<View style={styles.viewChoseContainer}>
-				<TouchableOpacity
-					onPress={switchToListView}
-					style={{ flexDirection: 'row', alignItems: 'center' }}
-				>
-					<MaterialCommunityIcons
-						name='format-list-bulleted-square'
-						size={25}
-					/>
-					<Text style={{ fontSize: 22, marginLeft: 5 }}>List view</Text>
+			<ImageBackground source={background} style={{ flex: 1 }}>
+				<TouchableOpacity onPress={getYourLocation} style={styles.nearbyBtn}>
+					<MaterialIcons name='my-location' size={30} color='white' />
+					<Text
+						style={{
+							textAlign: 'center',
+							...styles.nearbyBtnText
+						}}
+					>
+						Get nearby restaurants
+					</Text>
 				</TouchableOpacity>
-				<TouchableOpacity
-					onPress={switchToMapView}
-					style={{ flexDirection: 'row', alignItems: 'center' }}
-				>
-					<MaterialCommunityIcons name='google-maps' size={25} />
-					<Text style={{ fontSize: 22, marginLeft: 5 }}>Map view</Text>
-				</TouchableOpacity>
-			</View>
-			<Spinner
-				visible={isLoading}
-				textContent={'Loading...'}
-				textStyle={styles.spinnerTextStyle}
-			/>
-			{!isLoading && (
-				<ScrollView>
-					{!mapOpen && (
-						<RestaurantList
-							filter500={filter500}
-							filter5000={filter5000}
-							filter25000={filter25000}
-							restaurantsItems={restaurantsRadiusItems}
+				<View style={styles.viewChoseContainer}>
+					<TouchableOpacity
+						onPress={switchToListView}
+						style={{ flexDirection: 'row', alignItems: 'center' }}
+					>
+						<MaterialCommunityIcons
+							name='format-list-bulleted-square'
+							size={25}
+							color='#fff'
 						/>
-					)}
-				</ScrollView>
-			)}
-
-			{mapOpen && (
-				<MapView style={styles.map} initialRegion={mapData}>
-					{restaurantsRadiusItems['500m'].map(
-						(marker: RestaurantItem, index) => (
-							<Marker
-								key={marker.location.latitude + ',' + marker.location.longitude}
-								coordinate={{
-									latitude: +marker.location.latitude,
-									longitude: +marker.location.longitude
-								}}
-								title={marker.title}
-								description={marker.title}
+						<Text style={{ fontSize: 22, marginLeft: 5, color: '#fff' }}>
+							List view
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={switchToMapView}
+						style={{ flexDirection: 'row', alignItems: 'center' }}
+					>
+						<MaterialCommunityIcons name='google-maps' size={25} color='#fff' />
+						<Text style={{ fontSize: 22, marginLeft: 5, color: '#fff' }}>
+							Map view
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<Spinner
+					visible={isLoading}
+					textContent={'Loading...'}
+					textStyle={styles.spinnerTextStyle}
+				/>
+				{!isLoading && (
+					<ScrollView>
+						{!mapOpen && (
+							<RestaurantList
+								filter500={filter500}
+								filter5000={filter5000}
+								filter25000={filter25000}
+								restaurantsItems={restaurantsRadiusItems}
 							/>
-						)
-					)}
-					{restaurantsRadiusItems['5000m'].map(
-						(marker: RestaurantItem, index) => (
-							<Marker
-								key={marker.location.latitude + ',' + marker.location.longitude}
-								coordinate={{
-									latitude: +marker.location.latitude,
-									longitude: +marker.location.longitude
-								}}
-								title={marker.title}
-								description={marker.title}
-							/>
-						)
-					)}
-					{restaurantsRadiusItems['25000m'].map(
-						(marker: RestaurantItem, index) => (
-							<Marker
-								key={marker.location.latitude + ',' + marker.location.longitude}
-								coordinate={{
-									latitude: +marker.location.latitude,
-									longitude: +marker.location.longitude
-								}}
-								title={marker.title}
-								description={marker.title}
-							/>
-						)
-					)}
-				</MapView>
-			)}
+						)}
+					</ScrollView>
+				)}
+				{mapOpen && (
+					<MapView style={styles.map} initialRegion={mapData}>
+						{restaurantsRadiusItems['500m'].map(
+							(marker: RestaurantItem, index) => (
+								<Marker
+									key={
+										marker.location.latitude + ',' + marker.location.longitude
+									}
+									coordinate={{
+										latitude: +marker.location.latitude,
+										longitude: +marker.location.longitude
+									}}
+									title={marker.title}
+									description={marker.title}
+								/>
+							)
+						)}
+						{restaurantsRadiusItems['5000m'].map(
+							(marker: RestaurantItem, index) => (
+								<Marker
+									key={
+										marker.location.latitude + ',' + marker.location.longitude
+									}
+									coordinate={{
+										latitude: +marker.location.latitude,
+										longitude: +marker.location.longitude
+									}}
+									title={marker.title}
+									description={marker.title}
+								/>
+							)
+						)}
+						{restaurantsRadiusItems['25000m'].map(
+							(marker: RestaurantItem, index) => (
+								<Marker
+									key={
+										marker.location.latitude + ',' + marker.location.longitude
+									}
+									coordinate={{
+										latitude: +marker.location.latitude,
+										longitude: +marker.location.longitude
+									}}
+									title={marker.title}
+									description={marker.title}
+								/>
+							)
+						)}
+					</MapView>
+				)}
+			</ImageBackground>
 		</View>
 	);
 };
@@ -223,11 +250,16 @@ const styles = StyleSheet.create({
 	nearbyBtn: {
 		marginTop: 30,
 		fontSize: 18,
-		backgroundColor: 'red',
+		flexDirection: 'row',
 		padding: 10,
-		borderRadius: 10
+		borderRadius: 10,
+		// backgroundColor: '#afb1b3',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: 5
 	},
 	nearbyBtnText: {
+		color: '#000',
 		fontSize: 22
 	},
 	map: {
@@ -237,8 +269,10 @@ const styles = StyleSheet.create({
 	viewChoseContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
+		borderRadius: 10,
 		width: '100%',
 		marginTop: 20
+		// backgroundColor: '#afb1b3',
 	}
 });
 
