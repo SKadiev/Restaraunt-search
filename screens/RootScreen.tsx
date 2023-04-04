@@ -1,18 +1,16 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View } from 'react-native';
 import EmptyScreen from './EmptyScreen';
-import SearchScreen from './SearchScreen';
 import HomeLayoutTabs from './Home/HomeLayoutTabs';
+import UserProfileScreen from './UserProfileScreen';
 
 const RootScreen = () => {
 	const Drawer = createDrawerNavigator();
-	const Tab = createBottomTabNavigator();
 
 	return (
 		<>
 			<Drawer.Navigator useLegacyImplementation>
 				<Drawer.Screen name='Home' component={HomeLayoutTabs} />
+				<Drawer.Screen name='Profile' component={UserProfileScreen} />
 				<Drawer.Screen name='About' component={EmptyScreen} />
 			</Drawer.Navigator>
 		</>

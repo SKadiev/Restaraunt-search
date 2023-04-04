@@ -116,7 +116,7 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<SearchBar onSearchChange={onSearchPlace} />
-			<Text style={{ fontSize: 20, marginBottom: 5, color: '#fff' }}>
+			<Text style={{ fontSize: 20, marginBottom: 5, color: '#000' }}>
 				Radius filters
 			</Text>
 			<ResultFilter
@@ -124,42 +124,42 @@ const SearchScreen: React.FC<Props> = ({ navigation }) => {
 				filter5000={filter5000}
 				filter25000={filter25000}
 			/>
-			<ImageBackground source={background} style={{ flex: 1 }}>
-				<TouchableOpacity onPress={getYourLocation} style={styles.nearbyBtn}>
-					<MaterialIcons name='my-location' size={30} color='white' />
-					<Text
-						style={{
-							textAlign: 'center',
-							...styles.nearbyBtnText
-						}}
-					>
-						Get nearby restaurants
+			<TouchableOpacity onPress={getYourLocation} style={styles.nearbyBtn}>
+				<MaterialIcons name='my-location' size={30} color='black' />
+				<Text
+					style={{
+						textAlign: 'center',
+						...styles.nearbyBtnText
+					}}
+				>
+					Get nearby restaurants
+				</Text>
+			</TouchableOpacity>
+			<View style={styles.viewChoseContainer}>
+				<TouchableOpacity
+					onPress={switchToListView}
+					style={{ flexDirection: 'row', alignItems: 'center' }}
+				>
+					<MaterialCommunityIcons
+						name='format-list-bulleted-square'
+						size={25}
+						color='#000'
+					/>
+					<Text style={{ fontSize: 22, marginLeft: 5, color: '#000' }}>
+						List view
 					</Text>
 				</TouchableOpacity>
-				<View style={styles.viewChoseContainer}>
-					<TouchableOpacity
-						onPress={switchToListView}
-						style={{ flexDirection: 'row', alignItems: 'center' }}
-					>
-						<MaterialCommunityIcons
-							name='format-list-bulleted-square'
-							size={25}
-							color='#fff'
-						/>
-						<Text style={{ fontSize: 22, marginLeft: 5, color: '#fff' }}>
-							List view
-						</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={switchToMapView}
-						style={{ flexDirection: 'row', alignItems: 'center' }}
-					>
-						<MaterialCommunityIcons name='google-maps' size={25} color='#fff' />
-						<Text style={{ fontSize: 22, marginLeft: 5, color: '#fff' }}>
-							Map view
-						</Text>
-					</TouchableOpacity>
-				</View>
+				<TouchableOpacity
+					onPress={switchToMapView}
+					style={{ flexDirection: 'row', alignItems: 'center' }}
+				>
+					<MaterialCommunityIcons name='google-maps' size={25} color='#000' />
+					<Text style={{ fontSize: 22, marginLeft: 5, color: '#000' }}>
+						Map view
+					</Text>
+				</TouchableOpacity>
+			</View>
+			<ImageBackground source={background} style={{ flex: 1 }}>
 				<Spinner
 					visible={isLoading}
 					textContent={'Loading...'}
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
 		fontSize: 22
 	},
 	map: {
-		width: '100%',
+		width: 400,
 		height: '100%'
 	},
 	viewChoseContainer: {

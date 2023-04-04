@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Image,
 	StyleSheet,
@@ -45,6 +45,9 @@ export type Props = {
 
 const RestaurantItem: React.FC<Props> = ({ listTitle, items }) => {
 	const navigation = useNavigation<LocationNavigateProps>();
+	const CLIENT_ID = '23HWHSA4QNI3Z1SBY3C3KIUZPKSR5NPWZIHVJPK14IYN31NR';
+	const CLIENT_SECRET = 'BH4Y0WTUIC0251NWLIQV25HF3LYIEYAHYCM0PORTHOGILAX0';
+
 	return (
 		<View style={styles.container}>
 			{items.length > 0 && (
@@ -105,7 +108,8 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontWeight: 'bold',
-		alignSelf: 'center'
+		alignSelf: 'center',
+		color: '#fff'
 	},
 	listItem: {
 		backgroundColor: '#fff',
